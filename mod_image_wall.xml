@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="3.9.1" client="site" method="upgrade">
+    <name>Image Wall</name>
+    <author>Fabian Berndt</author>
+    <version>1.1.2</version>
+    <description>A simple module display an image wall.</description>
+    <files>
+        <filename>mod_image_wall.xml</filename>
+        <filename module="mod_image_wall">mod_image_wall.php</filename>
+        <filename>index.html</filename>
+        <filename>helper.php</filename>
+        <filename>tmpl/default.php</filename>
+        <filename>tmpl/index.html</filename>
+    </files>
+    <media folder="media" destination="mod_image_wall">
+        <folder>css</folder>
+        <folder>js</folder>
+    </media>
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                    name="data_source"
+                    type="text"
+                    label="Image source folder"
+                    required="false"
+                    description="Enter the name of the media folder the displayed images should be taken from.">
+                </field>
+                <field 
+                    name="auto_wrap_row" 
+                    type="radio" 
+                    default="1" 
+                    label="Autowrap images in row" 
+                    description="Choose whether the number of images per row should be defined automatically based on screen width." 
+                    class="btn-group btn-group-yesno">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                <field
+                    name="row_number"
+                    type="number"
+                    label="Number of images per row"
+                    description="Enter the number of images that should be displayed per row. The images will be resized accordingly."
+                    showon="auto_wrap_row:0"
+                    min="1"
+                    step="1"
+                    required="false">
+                </field>
+                <field
+                    name="image_spacing"
+                    type="list"
+                    label="Spacing rule inside image rows."
+                    description=""
+                    default="0"
+                    required="true">
+                    <option value="0">None</option>
+                    <option value="1">Left</option>
+                    <option value="2">Right</option>
+                    <option value="3">Center</option>
+                    <option value="4">Space-Around</option>
+                    <option value="5">Space-Between</option>
+                    <option value="6">Space-Evenly</option>
+                </field>
+                <field
+                    name="width_restriction_combo"
+                    type="subform"
+                    label="Width Restriction (deprecated)"
+                    multiple="false"
+                    min="1"
+                    max="2">
+                    <form>
+                        <field
+                            name="width_radio"
+                            type="radio"
+                            default="0"
+                            label="Enable width limit?"
+                            class="btn-group btn-group-yesno">
+                            <option value="0">JNO</option>
+                            <option value="1">JYES</option>
+                        </field>
+                        <field
+                            name="width_restriction"
+                            type="number"
+                            label="Set maximum width limit (px)"
+                            description="Note that depending on the autowrap setting, images will not scale beyond the total row width."
+                            min="1"
+                            step="1"
+                            required="false"
+                            showon="width_radio:1">
+                        </field>
+                    </form>
+                </field>
+                <field
+                    name="height_restriction_combo"
+                    type="subform"
+                    label="Height Restriction"
+                    multiple="false"
+                    min="1"
+                    max="2">
+                    <form>
+                        <field
+                            name="height_radio"
+                            type="radio"
+                            default="0"
+                            label="Enable height limit?"
+                            class="btn-group btn-group-yesno">
+                            <option value="0">JNO</option>
+                            <option value="1">JYES</option>
+                        </field>
+                        <field
+                            name="height_restriction"
+                            type="number"
+                            label="Set maximum height limit (px)"
+                            min="1"
+                            step="1"
+                            required="false"
+                            showon="height_radio:1">
+                        </field>
+                    </form>
+                </field>
+                <field
+                    name="mobile_opt"
+                    type="radio"
+                    default="0"
+                    label="Enable mobile optimization?"
+                    class="btn-group btn-group-yesno">
+                    <option value="0">JNO</option>
+                    <option value="1">JYES</option>
+                </field>
+                <field
+                    name="mobile_cells_per_row"
+                    type="number"
+                    label="Set the cells per row in mobile view"
+                    min="1"
+                    step="1"
+                    default="1"
+                    required="false"
+                    showon="mobile_opt:1">
+                </field>
+                <field type="spacer" name="myspacer" label="&lt;b&gt;Style options&lt;/b&gt;" />
+                <field
+                    name="background_color"
+                    type="color"
+                    label="Choose a background color."
+                    format="rgba">
+                </field>
+                <field
+                    name="inner_margin"
+                    type="number"
+                    label="Cell margin"
+                    description="Set a margin to be displayed between the images of a row."
+                    min="0"
+                    step="1"
+                    default="0">
+                </field>
+                <field
+                    name="row_margin"
+                    type="number"
+                    label="Row margin"
+                    description="Set a margin to be displayed between rows."
+                    min="0"
+                    step="1"
+                    default="0">
+                </field>
+                <field
+                    name="padding"
+                    type="number"
+                    label="Cell padding"
+                    description="Set a padding to be displayed around each image."
+                    min="0"
+                    step="1"
+                    default="0">
+                </field>
+                <field
+                    name="header_css"
+                    type="textarea"
+                    label="Header CSS"
+                    description="Type custom CSS that will affect each image's heading."
+                    rows="5"
+                    cols="15"
+                    filter="raw">
+                </field>
+                <field
+                    name="caption_css"
+                    type="textarea"
+                    label="Caption CSS"
+                    description="Type custom CSS that will affect each image's caption."
+                    rows="5"
+                    cols="15"
+                    filter="raw">
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+    <updateservers>
+      <server type="collection">localhost/joomla-updates/extension-update-dev.xml</server>
+    </updateservers>
+</extension>
