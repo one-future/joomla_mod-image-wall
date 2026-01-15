@@ -9,8 +9,8 @@
     $document = JFactory::getDocument();
     JHtml::_('jquery.framework');
 
-    //$document->addScript(JUri::base() . 'media/mod_image_wall/js/domhelper.js');
-    $document->addStyleSheet(JUri::base() .  'media/mod_image_wall/css/main.css');
+    $document->addScript(JUri::base() . 'modules/mod_image_wall/media/js/domhelper.js');
+    $document->addStyleSheet(JUri::base() .  '/modules/mod_image_wall/media/css/main.css');
 
     $justify_content = array("initial", "flex-start", "flex-end", "center", "space-around", "space-between", "space-evenly");
     
@@ -100,4 +100,3 @@
         }
     ?>
 </div>
-<script defer type="text/javascript" src="<?php echo JUri::base()?>/media/mod_image_wall/js/domhelper.js"></script>
