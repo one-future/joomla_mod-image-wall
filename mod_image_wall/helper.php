@@ -187,7 +187,7 @@
                         $cell = "
                         <div class=\"imgwall-cell" . "-" . $this->moduleID . "\" >
                             <figure>
-                                <img class=\"lazyload\" data-src=" . $directory . "/" . $image . " style=\"max-width: " . $maxwidth_container . "\">
+                                <img src=" . $directory . "/" . $image . " style=\"max-width: " . $maxwidth_container . "\" loading=\"lazy\">
                             </figure>
                         </div>\n";
 
@@ -228,13 +228,13 @@
                 list($imgwidth, $imgheight) = getimagesize($src);
                 $maxwidth = (isset($height_restr) ? (($height_restr * ($imgwidth / $imgheight)) . "px;") : ("none;"));
 
-                $result = "<img class=\"lazyload webp\" data-src=" . $src . " data-fallback=\"" . $fallback . "\" style=\"max-width: " . $maxwidth . "\" >";
+                $result = "<img class=\"webp\" src=" . $src . " data-fallback=\"" . $fallback . "\" style=\"max-width: " . $maxwidth . "\" loading=\"lazy\" >";
 
             } else {
                 list($imgwidth, $imgheight) = getimagesize($src);
                 $maxwidth = (isset($height_restr) ? (($height_restr * ($imgwidth / $imgheight)) . "px;") : ("none;"));
 
-                $result = "<img class=\"lazyload\" data-src=" . $src . " style=\"max-width: " . $maxwidth . "\" >";
+                $result = "<img src=" . $src . " style=\"max-width: " . $maxwidth . "\" loading=\"lazy\" >";
             }
 
             return array($result, $maxwidth, $filetype);
