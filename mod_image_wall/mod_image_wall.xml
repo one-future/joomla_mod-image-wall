@@ -2,7 +2,7 @@
 <extension type="module" version="3.9.1" client="site" method="upgrade">
     <name>Image Wall</name>
     <author>Fabian Berndt</author>
-    <version>1.1.2</version>
+    <version>1.2.0</version>
     <description>Display a dynamic row of images all sized automatically.</description>
     <files>
         <filename>mod_image_wall.xml</filename>
