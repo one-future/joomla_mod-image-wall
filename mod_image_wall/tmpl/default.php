@@ -6,12 +6,6 @@
     $mobileEnabled = $params->get('mobile_opt') ? $params->get('mobile_opt') : 0;
     $mobileCells = ($mobileEnabled == 1) ? $params->get('mobile_cells_per_row') : 0;
 
-    $document = JFactory::getDocument();
-    JHtml::_('jquery.framework');
-
-    $document->addScript(JUri::base() . 'modules/mod_image_wall/media/js/domhelper.js');
-    $document->addStyleSheet(JUri::base() .  '/modules/mod_image_wall/media/css/main.css');
-
     $justify_content = array("initial", "flex-start", "flex-end", "center", "space-around", "space-between", "space-evenly");
     
     $header_style = ".imgwall-caption" . "-" . $moduleID . " h3 {" . $params->get('header_css') . "}";

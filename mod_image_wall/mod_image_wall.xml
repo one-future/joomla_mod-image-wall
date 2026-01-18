@@ -190,6 +190,6 @@
         </fields>
     </config>
     <updateservers>
-    <server type="extension">https://raw.githubusercontent.com/one-future/joomla_mod-image-wall/refs/heads/main/updates.xml</server>
+        <server type="extension">https://raw.githubusercontent.com/one-future/joomla_mod-image-wall/refs/heads/main/updates.xml</server>
     </updateservers>
 </extension>

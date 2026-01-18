@@ -14,6 +14,26 @@
 
 // No direct access
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Factory;
+
+$document = Factory::getApplication()->getDocument();
+
+$wa = $document->getWebAssetManager();
+$wa->useScript('jquery');
+
+$wa->registerAndUseScript(
+    'mod_image_wall.script',
+    'modules/mod_image_wall/media/js/domhelper.js',
+    ['jquery'],
+    ['defer' => true]
+);
+
+$wa->registerAndUseStyle(
+    'mod_image_wall.style',
+    'modules/mod_image_wall/media/css/main.css'
+);
+
 // Include the syndicate functions only once
 require_once dirname(__FILE__) . '/helper.php';
 
