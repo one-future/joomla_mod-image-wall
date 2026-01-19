@@ -1,3 +1,19 @@
 <?xml version='1.0' encoding='utf-8'?>
 <updates>
+  <update>
+    <name>mod_image_wall</name>
+    <description>Simple wrapper module to dynamically put a text next to an image or video.</description>
+    <element>mod_image_wall</element>
+    <type>module</type>
+    <client>site</client>
+    <version>1.2.0</version>
+    <infourl>https://github.com/one-future/joomla_mod-image-wall</infourl>
+    <downloads>
+      <download type="full" format="zip" sha256="c77421101ea703b3add98768befad35665d9d4b8f141d56eaf9db6679bc941b9">https://github.com/one-future/joomla_mod-image-wall/releases/download/v1.2.0/mod_image_wall-v1.2.0.zip</download>
+    </downloads>
+    <php_minimum>8.1</php_minimum>
+    <maintainer>Fabian Berndt</maintainer>
+    <maintainerurl>https://github.com/theEpsilon</maintainerurl>
+    <targetplatform name="joomla" version="((4\..*)|(5\..*)|(6\..*))" />
+  </update>
 </updates>
