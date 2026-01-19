@@ -1,0 +1,141 @@
+name: Joomla Module Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref }}
+
+      - name: Set up python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Extract version from module manifest
+        run: |
+          python <<'EOF'
+          import xml.etree.ElementTree as ET
+          import os
+          tree = ET.parse("mod_image_wall/mod_image_wall.xml")
+          version = tree.findtext(".//version")
+          print(f"VERSION={version}")
+          with open(os.environ["GITHUB_ENV"], "a") as f:
+              f.write(f"VERSION={version}\n")
+          EOF
+
+      - name: Set environment variables
+        run: |
+          echo "TAG=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "ZIP_NAME=mod_image_wall-v$VERSION.zip" >> $GITHUB_ENV
+
+      - name: Zip Joomla module
+        run: zip -r "$ZIP_NAME" mod_image_wall/* -x "*/.DS_Store"
+
+      - name: Generate SHA256 checksum
+        run: |
+          SHA256=$(sha256sum "$ZIP_NAME" | cut -d ' ' -f 1)
+          echo "SHA256=$SHA256" >> $GITHUB_ENV
+
+      - name: Ensure updates.xml exists
+        run: |
+          if [[ ! -f updates.xml ]]; then
+            printf '%s\n' \
+            '<?xml version="1.0" encoding="utf-8"?>' \
+            '<updates>' \
+            '</updates>' \
+            > updates.xml
+          fi
+
+      - name: Update Joomla update server XML
+        run: |
+          python <<'EOF'
+          import xml.etree.ElementTree as ET
+
+          version = "${{ env.VERSION }}"
+          tag = "${{ env.TAG }}"
+          zip_name = "${{ env.ZIP_NAME }}"
+          sha256 = "${{ env.SHA256 }}"
+          repo = "${{ github.repository }}"
+
+          download_url = f"https://github.com/{repo}/releases/download/{tag}/{zip_name}"
+
+          tree = ET.parse("updates.xml")
+          root = tree.getroot()
+
+          for update in root.findall("update"):
+            if update.findtext("version") == version:
+              print("Version already exists, skipping.")
+              exit(0)
+
+          update = ET.Element("update")
+          ET.SubElement(update, "name").text = "mod_image_wall"
+          ET.SubElement(update, "description").text = "Simple wrapper module to dynamically put a text next to an image or video."
+          ET.SubElement(update, "element").text = "mod_image_wall"
+          ET.SubElement(update, "type").text = "module"
+          ET.SubElement(update, "client").text = "site"
+          ET.SubElement(update, "version").text = version
+          ET.SubElement(update, "infourl").text = f"https://github.com/{repo}"
+
+          downloads = ET.SubElement(update, "downloads")
+          download = ET.SubElement(downloads, "download", {
+            "type": "full",
+            "format": "zip",
+            "sha256": sha256
+          })
+          download.text = download_url
+
+          ET.SubElement(update, "php_minimum").text = "8.1"
+
+          ET.SubElement(update, "maintainer").text = "Fabian Berndt"
+          ET.SubElement(update, "maintainerurl").text = "https://github.com/theEpsilon"
+
+          ET.SubElement(update, "targetplatform", {
+            "name": "joomla",
+            "version": "((4\..*)|(5\..*)|(6\..*))"
+          })
+
+          root.append(update)
+
+          ET.indent(tree, space="  ", level=0)
+          tree.write("updates.xml", encoding="utf-8", xml_declaration=True)
+          EOF
+
+      - name: Create pull request for updates.xml
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update update server for v${{ env.VERSION }}"
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+          branch: update-server-${{ github.ref_name }}
+          delete-branch: true
+          title: "Update updates.xml for v${{ env.VERSION }}"
+          body: |
+            Automated update server changes for release v${{ env.VERSION }}.
+          base: main
+          assignees: theEpsilon
+          reviewers: theEpsilon
+          add-paths: |
+            updates.xml
+
+
+      - name: Create GitHub Release and upload ZIP
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: v${{ env.VERSION }}
+          files: ${{ env.ZIP_NAME }}

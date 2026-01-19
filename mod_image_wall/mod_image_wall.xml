@@ -2,8 +2,8 @@
 <extension type="module" version="3.9.1" client="site" method="upgrade">
     <name>Image Wall</name>
     <author>Fabian Berndt</author>
-    <version>1.1.2</version>
-    <description>A simple module display an image wall.</description>
+    <version>1.2.0</version>
+    <description>Display a dynamic row of images all sized automatically.</description>
     <files>
         <filename>mod_image_wall.xml</filename>
         <filename module="mod_image_wall">mod_image_wall.php</filename>
@@ -11,11 +11,8 @@
         <filename>helper.php</filename>
         <filename>tmpl/default.php</filename>
         <filename>tmpl/index.html</filename>
+        <folder>media</folder>
     </files>
-    <media folder="media" destination="mod_image_wall">
-        <folder>css</folder>
-        <folder>js</folder>
-    </media>
     <config>
         <fields name="params">
             <fieldset name="basic">
@@ -193,6 +190,6 @@
         </fields>
     </config>
     <updateservers>
-      <server type="collection">localhost/joomla-updates/extension-update-dev.xml</server>
+        <server type="extension">https://raw.githubusercontent.com/one-future/joomla_mod-image-wall/refs/heads/main/updates.xml</server>
     </updateservers>
 </extension>
